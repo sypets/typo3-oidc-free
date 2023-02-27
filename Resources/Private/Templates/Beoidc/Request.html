@@ -1,0 +1,597 @@
+<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        html, body {
+            overflow: auto;
+            height: 100%;
+        }
+
+        .btn{
+            background: #f05c00;
+        }
+
+        .button {
+            font-size: 28px;
+            min-width: 200px;
+            margin: 5px;
+            padding: 5px;
+
+            display: inline-block;
+            border-radius: 2px;
+            /*background-color: #f2f2f2;*/
+            border: none;
+            background-color: #f05c00;
+            color: white;
+            text-shadow: 2px 2px 4px #0f0e0e;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .button:hover span {
+            padding-right: 25px;
+        }
+
+        .button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+    </style>
+
+    <style>
+        body {font-family: Arial;}
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background: #002b36;
+            box-shadow: 2px 2px 2px darkgrey;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 14px;
+            transition: 0.3s;
+            font-size: 18px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background: #e8d658;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #f05c00;
+            color: white;
+            font-weight: bolder;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 3px 6px;
+            border-top: none;
+        }
+    </style>
+
+    <style>
+        .profileTable{
+            width: 100%;
+            background: #fcf4bb;
+            border: solid 2px orangered;
+        }
+
+        .profileTable tbody td {
+            text-align: center;
+            padding: 15px;
+            border: solid 2px black;
+        }
+
+        #topContainer{
+            display: flex;
+            flex-flow: row wrap;
+            width: 100%;
+            justify-content: space-evenly           /*justify-content: space-between;*/
+        }
+
+        #leftContainer{
+            order: 1;
+            flex: 0.2 1 45% ;
+        }
+
+        #rightContainer{
+            order: 2;
+            flex: 0.2 1 30% ;
+        }
+
+        .hideElement{
+            display: none;
+        }
+
+        .showElement{
+            display: block;
+        }
+
+        hr{
+            border-top: 2px solid lightgrey ;
+        }
+
+        .helpButton{
+            background: #428bca;
+            color: white;
+            font-weight: bold;
+            box-shadow: 2px 2px 2px darkgrey;
+            text-shadow: 2px 2px 4px black;
+            border-radius: 5px;
+        }
+        .premiumMessage{
+            color: red;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .premiumBox{
+            font-weight: bold;
+            background: #ffe6e6;
+        }
+        .price .header {
+        background-color: #111;
+        color: white;
+        font-size: 25px;
+        }
+
+        .gm-div{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.gm-input-label{
+    order: 1;
+    justify-self: left;
+    flex: 0.2 1 40% ;
+    background: lightgrey;
+    margin-right: 2% ;
+}
+
+.gm-input{
+    order: 2;
+    flex: 0.2 1 50% ;
+    margin-left: 2% ;
+    justify-self: right;
+}
+.gm-submit{
+    margin-left: 2%;
+}
+    </style>
+
+</head>
+
+<body class="app sidebar-mini rtl">
+
+<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+
+<div class="tab">
+    <button id="oidc_tab_btn" class="tablinks button" onclick="removeFlashMessage(); openTab(event, 'OIDC_Settings')">OpenID Connect Client</button>
+    <button id="am_tab_btn" class="tablinks button" onclick="removeFlashMessage(); openTab(event, 'Attribute_Mapping')">Attribute Mapping</button>
+    <button id="gm_tab_btn" class="tablinks button" onclick="removeFlashMessage(); openTab(event, 'Group_Mapping')">Group Mapping</button>
+    <button id="upgrade_tab_btn" class="tablinks button" onclick="removeFlashMessage(); openTab(event, 'Upgrade')">Upgrade</button>
+</div>
+
+<input hidden name="taby" id="taby" value="{tab}">
+
+<div id="topContainer">
+    <!--Left Container-->
+    <div id="leftContainer">
+
+        <!--   Configure OpenID Connect tab-->
+        <div id="OIDC_Settings"  class="tabcontent"  >
+            <h3><strong>Configure OpenID Connect Client </strong></h3>  <p class="premiumMessage" > </p>
+            <hr>
+            <div class="tile" >
+                <form method="POST" action="" id="oidc_form" >
+                    <input type="hidden" name="option" value="oidc_settings">
+                    <div class="form-group" >
+                        <label for="app_type"><b>Application type</b><span class="premiumMessage"> * </span></label>
+                        <select class="form-control" name="app_type" id="app_type">
+                                    <f:if condition="{conf.app_type} == 'OAuth'">
+                                        <f:then>
+                                            <option value="OAuth" selected>OAuth</option>
+                                            <option value="OpenID Connect" > OpenID Connect</option>
+                                        </f:then>
+                                        <f:else>
+                                            <option value="OAuth">OAuth</option>
+                                            <option value="OpenID Connect" selected> OpenID Connect</option>
+                                        </f:else>
+                                    </f:if>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feoidc"><b>feoidc page Url</b></label>
+                        <input class="form-control" name="feoidc" id="feoidc" type="text"
+                               required value="{conf.feoidc}">
+                    </div>
+                    <div class="form-group">
+                        <label for="redirect_url"><b>Redirect/Callback Url</b></label>
+                        <input class="form-control" name="redirect_url" id="redirect_url" type="text"
+                               required value="{conf.redirect_url}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="app_name"><b>Application Name</b><span class="premiumMessage"> * </span></label>
+                        <input class="form-control" name="app_name" id="app_name" type="text"
+                               required value="{conf.app_name}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client_id"><b>Client ID</b><span class="premiumMessage"> * </span></label>
+                        <input class="form-control" name="client_id" id="client_id" type="text" required value="{conf.client_id}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client_secret"><b>Client Secret</b><span class="premiumMessage"> * </span></label>
+                        <input class="form-control" name="client_secret" id="client_secret" type="password" required value="{conf.client_secret}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scope"><b>Scope</b></label>
+                        <input class="form-control" name="scope" id="scope" type="text" value="{conf.scope}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auth_endpoint"><b>Authorization Endpoint</b><span class="premiumMessage"> * </span></label>
+                        <input class="form-control" name="auth_endpoint" id="auth_endpoint" type="text" required value="{conf.auth_endpoint}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="token_endpoint"><b>Access Token Endpoint</b><span class="premiumMessage"> * </span></label>
+                        <input class="form-control" name="token_endpoint" id="token_endpoint" type="text" required value="{conf.token_endpoint}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_info_endpoint"><b>User Info Endpoint</b></label>
+                        <input class="form-control" name="user_info_endpoint" id="user_info_endpoint" type="text" value="{conf.user_info_endpoint}">
+                    </div>
+
+                    <div class="animated-checkbox">
+
+                        <f:if condition="{conf.set_header_credentials} == 'on' ">
+                            <f:then>
+                                <label> <span class="label-text">Set client credentials in Header</span></label>
+                                <input type="checkbox" checked id="set_header_credentials"  name="set_header_credentials" >
+                                <label> <span class="label-text">Set client credentials in Body</span></label>
+                                <input type="checkbox" id="set_body_credentials"  name="set_body_credentials" >
+                            </f:then>
+                            <f:else>
+                                <label> <span class="label-text">Set client credentials in Header</span></label>
+                                <input type="checkbox" id="set_header_credentials"  name="set_header_credentials" >
+                                <label> <span class="label-text">Set client credentials in Body</span></label>
+                                <input type="checkbox" checked id="set_body_credentials"  name="set_body_credentials" >
+                            </f:else>
+                        </f:if>
+
+                    </div>
+
+                    <div class="form-group" >
+                        <label type="hidden" for="response"><b></b></label>
+                        <input class="form-control" name="response" id="response" type="hidden"
+                               value="{conf.redirect_url}">
+                    </div> 
+                    &nbsp
+                    <div class="tile-footer">
+                        <button class="btn btn-primary" type="button" name="submit_saml_form" id="submit_saml_form" style="margin-right:10px;" onClick="jQuery('#oidc_form').submit();">Save settings</button>
+                        <a style="text-decoration:none"><button onClick="window.open('{conf.feoidc}'+'?RelayState=testconfig');" class="btn btn-primary" name="do_sso" type="button">Test Configuration</button></a>
+                    </div>
+                </form>
+        </div>
+        
+        <hr>
+
+         <div class="animated-checkbox">
+             <h4><strong>Grant Settings</strong> <span class="premiumMessage">[Premium Feature]</span> </h4>
+         </div>
+        &nbsp;
+        <div disabled >
+            <div class="animated-checkbox">
+                <input type="checkbox" disabled id="auth_code_grant" name="grant_type" value="auth_code_grant" checked >
+                <label> <span class="label-text">Authorization Code Grant</span>  [Default]</label>
+            </div>
+            <div class="animated-checkbox">
+                <input type="checkbox"  id="implicit_grant" name="grant_type" value="implicit_grant" disabled >
+                <label> <span class="label-text">Implicit Grant</span></label>
+            </div>
+            <div class="animated-checkbox">
+                <input type="checkbox"  id="password_grant" name="grant_type" value="password_grant"  disabled >
+                <label> <span class="label-text">Password Grant</span></label>
+            </div>
+            <div class="animated-checkbox">
+                <input type="checkbox" id="refresh_token_grant" name="grant_type" value="refresh_token_grant"  disabled>
+                <label> <span class="label-text">Refresh Token Grant</span></label>
+            </div>
+        </div>
+
+        </div>
+
+        <!--   ATTRIBUTE MAPPING TAB-->
+        <div id="Attribute_Mapping" class="tabcontent"  >
+            <form id="attrs_form" method="post" action ="">
+                <input type="hidden" name="option" value="attribute_mapping">
+                <!--            <br>-->
+                <h3><strong>Attribute Mapping</strong> </h3>
+                <hr>
+                <div class="tile">
+                    <div class="form-group">
+                        <label for="oidc_am_username"><strong>Username</strong><span class="premiumMessage"> * </span></label>
+                        <input class="form-control" id="oidc_am_username" name="oidc_am_username" type="text" value="{am_username}">
+                    </div>
+                    &nbsp;
+                    <div disabled >
+                        <p class="premiumMessage" >Advanced attribute mapping is available in premium version only. Contact us at <a href="https://mail.google.com/mail/u/0/?fs=1&amp;tf=cm&amp;source=mailto&amp;su=Query+to+purchase+Typo3+OpenID+Connect+Premium+Plan+&amp;to=info@xecurify.com&amp;body=I+want+to+enquire+about+the+purchase+of+the+Typo3+OpenID+Connect+Premium+Plan.+" target="_blank">info@xecurify.com</a> to upgrade to premium version</p>
+
+                        <div class="form-group">
+                            <label for="oidc_am_email"><strong>Email</strong><span class="premiumMessage"> * </span></label>
+                            <input class="form-control" disabled id="oidc_am_email" name="oidc_am_email" type="text" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oidc_am_fname"><b>First Name</b><span class="premiumMessage"> * </span></label>
+                            <input class="form-control" disabled id="oidc_am_fname" name="oidc_am_fname" type="text" >
+                        </div>
+                        <div class="form-group">
+                            <label for="oidc_am_lname"><b>Last Name</b><span class="premiumMessage"> * </span></label>
+                            <input class="form-control" disabled id="oidc_am_lname" name="oidc_am_lname" type="text" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oidc_am_group"><strong>Group/Role</strong><span class="premiumMessage"> * </span></label>
+                            <input class="form-control"  disabled id="oidc_am_group" name="oidc_am_group" type="text" value="">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-inline">
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary" name="custom_attrs" id="custom_attrs" onClick="jQuery('#attrs_form').submit();">Save</button>
+            </form>
+        </div>
+
+        <!--   GROUP MAPPING TAB-->
+        <div id="Group_Mapping" class="tabcontent"  >
+            <form id="grpmap_form" method="post" action ="">
+                <input type="hidden" name="option" value="group_mapping">
+
+                <h3><strong>Group Mapping</strong> </h3>
+                <hr>
+                <div class="tile">
+                    <div class="form-group gm-div">
+                        <label class="form-control gm-input-label" for="oidc_default_group"><strong>Default Group</strong><span class="premiumMessage"> * </span></label>
+                        <select class="form-control gm-input" name="defaultUserGroup" id="defaultUserGroup" >
+                            <f:for each="{allUserGroups}" as="userGroup">
+                                <f:if condition="{userGroup.title}=={defaultGroup}" >
+                                    <f:then>
+                                        <option class="form-control gm-input-label" selected value="{userGroup.title}">{userGroup.title}</option>
+                                    </f:then>
+                                    <f:else>
+                                        <option class="form-control gm-input" value="{userGroup.title}">{userGroup.title}</option>
+                                    </f:else>
+                                </f:if>
+                            </f:for>
+                        </select>
+                    </div>
+                    &nbsp;
+                    <div disabled >
+                        <p class="premiumMessage" >Advanced Group mapping is available in premium version only. Contact us at <a href="https://mail.google.com/mail/u/0/?fs=1&amp;tf=cm&amp;source=mailto&amp;su=Query+to+purchase+Typo3+OpenID+Connect+Premium+Plan+&amp;to=info@xecurify.com&amp;body=I+want+to+enquire+about+the+purchase+of+the+Typo3+OpenID+Connect+Premium+Plan.+" target="_blank">info@xecurify.com</a> to upgrade to premium version</p>
+
+                        <h4><strong>Map Typo3 Groups to IDP Groups</strong></h4>
+                        <hr>
+                        <f:for each="{allUserGroups}" as="userGroup">
+                            <div class="gm-div">
+                                <label class="form-control gm-input-label" for="{userGroup.uid}">{userGroup.title}</label>
+                                <input class="form-control gm-input" {log} id="{userGroup.uid}" disabled name="{userGroup.uid}" type="text" value="{conf_gm.{userGroup.uid}}">
+                            </div>
+                        </f:for>
+                        <br/>
+
+                    </div>
+                </div>
+
+                <div class="form-inline">
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary" name="custom_attrs" id="custom_attrs" onClick="jQuery('#grpmap_form').submit();">Save</button>
+            </form>
+        </div>
+
+         <!--   UPGRADE TAB-->
+         <div id="Upgrade" class="tabcontent">
+            <div class="container">
+              <div class="row">
+        
+               <div class="columns">
+                 <ul class="price">
+                    <h3><strong>Premium Plan ($449*)</strong> </h3>
+                    <hr>
+                     <li><h4>&#9989; Auto Create Users (Unlimited)</h4></li><br>
+                     <li><h4>&#9989; Add SSO login button</h4></li><br>
+                     <li><h4>&#9989; Basic Attribute Mapping</h4></li><br>
+                     <li><h4>&#9989; Advanced Attribute Mapping</h4></li><br>
+                     <li><h4>&#9989; Custom Attribute Mapping</h4></li><br>
+                     <li><h4>&#9989; Advanced Role Mapping</h4></li><br>
+                     <li><h4>&#9989; Oauth Single Logout</h4></li><br>
+                     <a class="btn btn-primary" href="https://mail.google.com/mail/u/0/?fs=1&amp;tf=cm&amp;source=mailto&amp;su=Query+to+purchase+Typo3+OpenID+Connect+Premium+Plan+&amp;to=info@xecurify.com&amp;body=I+want+to+enquire+about+the+purchase+of+the+Typo3+OpenID+Connect+Premium+Plan.+" target="_blank" rel="nofollow" class="button btn-round">Upgrade Now</a>
+                 </ul>
+               </div>
+              </div>
+        
+              <div style="margin:2% 0 2% 2%;">
+               <form style="display:none;" id="mocf_loginform" action="'.$hostname.'/moas/login"
+                  target="_blank" method="post">
+                  <input type="email" name="username" value="'.$email.'" >
+                  <input type="text" name="redirectUrl" value="'.$hostname.'/moas/initializepayment" >
+                  <input type="text" name="requestOrigin" id="requestOrigin"  >
+                </form>
+               </div>
+              </div>
+            </div>
+        
+
+
+    </div>
+
+    <div id="rightContainer">
+
+    <div id="Support" class="tabcontent">
+        <h3 style="text-align:center"><strong>Support</strong></h3>
+        <hr>
+        <h4 style="text-align:center; margin-top: 25%;"><b>Need help with the setup???</b></h4>
+        <h4 style="text-align:center"><b>Facing any issues???</b></h4>
+        <h4 style="text-align:center"><b>Need demo of the Premium features???</b></h4><br>
+        <h4 style="text-align:center">Click the button below for help</h4>
+        <br>
+        <div style="text-align:center; ">
+            <a target="blank" class="btn btn-primary" style="width:40%;" name="custom_attrs" id="custom_attrs" href="https://www.miniorange.com/contact">Contact Us</a>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+    function mo_valid_query(f) {
+        !(/^[a-zA-Z?,.\(\)\/@ 0-9]*$/).test(f.value) ? f.value = f.value.replace(
+            /[^a-zA-Z?,.\(\)\/@ 0-9]/, '') : null;
+    }
+</script>
+
+<script>
+
+    $(document).ready(function() {
+        var session = document.getElementById('taby').value;
+        console.log("Session in start : in ready(): "+session);
+
+        if (session == "OIDC_Settings" || session == "")
+        {
+            openTab(event, 'OIDC_Settings');
+        }
+
+        if (session == "Attribute_Mapping")
+        {
+            openTab(event, 'Attribute_Mapping');
+        }
+
+        if (session == "Group_Mapping")
+        {
+            openTab(event, 'Group_Mapping');
+        }
+
+        if(document.getElementsByClassName("active").length === 0){
+            document.getElementById(session).className  += " active";
+        }
+        console.log("Session in end : ".session);
+        document.getElementById(session).className  += " active";
+
+        $("input[name='grant_type']").click(function() {
+            $("input[name='grant_type']").not(this).prop('checked', false);
+        });
+    });
+
+    function openTab(evt, activeTab) {
+        console.log("inside openTab ".cityname);
+        document.getElementById("leftContainer").classList.add("showElement");
+        document.getElementById("leftContainer").classList.remove("hideElement");
+
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        if(activeTab!=="Support"){
+            if(activeTab=="Upgrade")
+            {
+                document.getElementById(activeTab).style.display = "block";
+            }
+            else
+            {
+                document.getElementById(activeTab).style.display = "block";
+                document.getElementById("Support").style.display = "block";
+                document.getElementById(activeTab+"_Tab").classList.add("active");
+            }
+        }else{
+            document.getElementById(activeTab).style.display = "block";
+            document.getElementById("leftContainer").classList.replace("showElement","hideElement");
+        }
+
+        evt.currentTarget.className += " active";
+
+    }
+
+    function removeFlashMessage(){
+        document.querySelectorAll('.typo3-messages').forEach(function(a){
+            a.remove();
+            console.log("remove typo3 messages.");
+        });
+    }
+
+    function ifUserRegistered(){
+        if (document.getElementById('registered').checked)
+        {
+            document.getElementById('confirmPasswordDiv').style.display = "none";
+        } else {
+            document.getElementById('confirmPasswordDiv').style.display = "block";
+        }
+    }
+
+</script>
+
+</body>
+</html>
