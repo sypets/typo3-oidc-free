@@ -90,10 +90,7 @@ class TestResultActions
         $this->processTemplateHeader();
         $this->resFolder = Utilities::getExtensionRelativePath();
 
-        if(!$this->hasExceptionOccurred)
-        			$this->processTemplateContent();
-        else
-        			$this->processExceptionTemplate();
+        $this->processTemplateContent();
 
         $this->processTemplateFooter();
         printf($this->template);
@@ -106,24 +103,10 @@ class TestResultActions
      */
     private function processTemplateHeader()
     {
-        $header = Utilities::isBlank($this->nameId) ? $this->errorHeader : $this->successHeader;
+        $header = !isset($this->attrs) || empty($this->attrs) ? $this->errorHeader : $this->successHeader;;
         $header = str_replace("{{right}}",Utilities::getImageUrl(Constants::IMAGE_RIGHT),$header);
         $header = str_replace("{{wrong}}",Utilities::getImageUrl(Constants::IMAGE_WRONG),$header);
         $this->template = str_replace("{{header}}",$header,$this->template);
-    }
-
-
-    /**
-     * Add exception Content to our template variable for echoing on screen.
-     */
-    private function processExceptionTemplate()
-    {
-        $this->exceptionBody = str_replace("{{exceptionmessage}}",$this->samlException->getMessage(),$this->exceptionBody);
-        $this->exceptionBody = str_replace("{{certErrorDiv}}",$this->processCertErrors(),$this->exceptionBody);
-        $response = $this->samlResponse instanceof SAMLResponseException ? $this->samlException->getSamlResponse() : "";
-        $this->samlResponse = str_replace("{{samlresponse}}",$response,$this->samlResponse);
-        $this->exceptionBody = str_replace("{{samlResponseDiv}}",$this->samlResponse,$this->exceptionBody);
-        $this->template = str_replace("{{commonbody}}",$this->exceptionBody,$this->template);
     }
 
 
@@ -150,10 +133,15 @@ class TestResultActions
     private function processTemplateContent()
     {
         error_log("In processTemplateContent: ".$this->nameId);
-        $this->commonBody = str_replace("{{email}}",strip_tags($this->nameId),$this->commonBody);
-        $tableContent = !array_filter($this->attrs) ? "No Attributes Received." : $this->getTableContent();
-        $this->commonBody = str_replace("{{tablecontent}}",$tableContent,$this->commonBody);
-        $this->template = str_replace("{{commonbody}}",$this->commonBody,$this->template);
+        if(isset($this->attrs) || !empty($this->attrs))
+        {
+            $this->commonBody = str_replace("{{email}}",strip_tags((string)$this->nameId),$this->commonBody);
+            $tableContent = !isset($this->attrs) || empty($this->attrs) ? "No Attributes Received." : $this->getTableContent();
+            $this->commonBody = str_replace("{{tablecontent}}",$tableContent,$this->commonBody);
+            $this->template = str_replace("{{commonbody}}",$this->commonBody,$this->template);
+        }
+        else
+        $this->template = str_replace("{{commonbody}}",'',$this->template);
     }
 
 
@@ -165,6 +153,7 @@ class TestResultActions
     {
         $tableContent = '';
         error_log("attributes 169: ".print_r($this->attrs,true));
+        if($this->attrs)
         foreach ($this->attrs as $key => $value)
         {
             error_log("table values: ".print_r($value,true));
@@ -172,7 +161,7 @@ class TestResultActions
             $value= explode(' ',$value);
             if(!in_array(null, $value))
                 $tableContent .= str_replace("{{key}}",$key,str_replace("{{value}}",
-                    strip_tags(implode("<br/>",$value)),$this->tableContent));
+                    strip_tags((string)implode("<br/>",$value)),$this->tableContent));
         }
         return $tableContent;
     }

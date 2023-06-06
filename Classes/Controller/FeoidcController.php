@@ -32,7 +32,6 @@ class FeoidcController extends ActionController
         error_log("In FeoidcController : sendRequestAction()");
        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->flushCaches();
         
-        //$samlRequest = $this->build();
         if(isset($_GET['RelayState']))
         {
             $cookkey="mo_oauth_test";
@@ -66,7 +65,7 @@ class FeoidcController extends ActionController
         error_log("In FeoidcConroller : createAuthorizationUrl()");
 
         $json_object = MoUtilities::fetchFromDb(Constants::OIDC_OIDC_OBJECT,Constants::TABLE_OIDC);
-        $app = json_decode($json_object,true);
+        $app = isset($json_object) ? json_decode((string)$json_object,true) : array();
         if(empty($app))
         {
             echo "Please configure the plugin first!!!";exit;
@@ -89,31 +88,6 @@ class FeoidcController extends ActionController
         $_SESSION['appname'] = $app[Constants::OIDC_APP_NAME];
 
        return $authorizationUrl;
-    }
-
-    //here entity is corporation, alliance or character name. The administrator compares these when user logs in
-    function moAuthCheckValidityOfEntity($entityValue, $entitySessionValue, $entityName) {
-
-        $entityString = $entityValue ? $entityValue : false;
-        $valid_entity = false;
-        if( $entityString ) {			//checks if entityString is defined
-            if ( strpos( $entityString, ',' ) !== false ) {			//checks if there are more than 1 entity defined
-                $entity_list = array_map( 'trim', explode( ",", $entityString ) );
-                foreach( $entity_list as $entity ) {			//checks for each entity to exist
-                    if( $entity == $entitySessionValue ) {
-                        $valid_entity = true;
-                        break;
-                    }
-                }
-            } else {		//only one entity is defined
-                if( $entityString == $entitySessionValue ) {
-                    $valid_entity = true;
-                }
-            }
-        } else {			//entity is not defined
-            $valid_entity = false;
-        }
-        return $valid_entity;
     }
 
     function testAttrMappingConfig($nestedprefix, $resourceOwnerDetails){

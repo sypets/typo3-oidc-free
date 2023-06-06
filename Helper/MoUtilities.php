@@ -43,22 +43,13 @@ namespace Miniorange\Helper;
 				return $extRelativePath;
 			}
 
-			/**
-			 * Get the Private Key File Path
-			 * @return string
-			 */
-			public static function getPrivateKey()
-			{
-					return self::getResourceDir().DIRECTORY_SEPARATOR.Constants::SP_KEY;
-			}
-
             /**
              *---------FETCH CUSTOMER DETAILS-------------------------
             */
 			public static function fetch_cust($col)
 			{
-				$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('customer');
-				$variable = $queryBuilder->select($col)->from('customer')->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetchColumn(0);
+				$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('mo_customer');
+				$variable = $queryBuilder->select($col)->from('mo_customer')->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetchColumn(0);
 				return $variable;
 			}
 
@@ -71,8 +62,8 @@ namespace Miniorange\Helper;
 				{
 					self::insertValue();
 				}
-				$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('customer');
-				$queryBuilder->update('customer')->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->set($column, $value)->execute();
+				$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('mo_customer');
+				$queryBuilder->update('mo_customer')->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->set($column, $value)->execute();
 			}
 
             /**
@@ -80,8 +71,8 @@ namespace Miniorange\Helper;
             */
 			public static function insertValue()
 			{
-				$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('customer');
-				$affectedRows = $queryBuilder->insert('customer')->values([  'id' => '1' ])->execute();
+				$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('mo_customer');
+				$affectedRows = $queryBuilder->insert('mo_customer')->values([  'id' => '1' ])->execute();
 			}
 
 			public static function getAlternatePrivateKey(){
@@ -139,14 +130,6 @@ namespace Miniorange\Helper;
 					return self::getBaseUrl() . $_SERVER["REQUEST_URI"];
 			}
 
-			public static function check_certificate_format($certificate){
-					if(!@openssl_x509_read($certificate)){
-							throw new Exception("Certificate configured in the connector is in wrong format");
-					}else{
-						return 1;
-					}
-			}
-
 			/**
 			 * This function sanitizes the certificate
 			 */
@@ -159,14 +142,6 @@ namespace Miniorange\Helper;
 					$certificate = str_replace( " ", "", $certificate );
 					$certificate = chunk_split($certificate, 64, "\r\n");
 					$certificate = "-----BEGIN CERTIFICATE-----\r\n" . $certificate . "-----END CERTIFICATE-----";
-					return $certificate;
-			}
-
-			public static function desanitize_certificate( $certificate ) {
-					$certificate = preg_replace("/[\r\n]+/", "", $certificate);
-					$certificate = str_replace( "-----BEGIN CERTIFICATE-----", "", $certificate );
-					$certificate = str_replace( "-----END CERTIFICATE-----", "", $certificate );
-					$certificate = str_replace( " ", "", $certificate );
 					return $certificate;
 			}
 
