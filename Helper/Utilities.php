@@ -175,15 +175,6 @@
             return self::getBaseUrl() . $_SERVER["REQUEST_URI"];
         }
 
-        public static function check_certificate_format($certificate)
-        {
-            if (!@openssl_x509_read($certificate)) {
-                throw new Exception("Certificate configured in the connector is in wrong format");
-            } else {
-                return 1;
-            }
-        }
-
         /**
          * This function sanitizes the certificate
          */
@@ -197,15 +188,6 @@
             $certificate = str_replace(" ", "", $certificate);
             $certificate = chunk_split($certificate, 64, "\r\n");
             $certificate = "-----BEGIN CERTIFICATE-----\r\n" . $certificate . "-----END CERTIFICATE-----";
-            return $certificate;
-        }
-
-        public static function desanitize_certificate($certificate)
-        {
-            $certificate = preg_replace("/[\r\n]+/", "", $certificate);
-            $certificate = str_replace("-----BEGIN CERTIFICATE-----", "", $certificate);
-            $certificate = str_replace("-----END CERTIFICATE-----", "", $certificate);
-            $certificate = str_replace(" ", "", $certificate);
             return $certificate;
         }
 
@@ -237,10 +219,6 @@
             $message = GeneralUtility::makeInstance(FlashMessage::class, $message, $header, FlashMessage::OK);
             $out = GeneralUtility::makeInstance(ListRenderer ::class)->render([$message]);
             echo $out;
-        }
-
-        public static function log_php_error($msg="",$obj){
-            error_log($msg.": ".print_r($obj,true));
         }
 
     }

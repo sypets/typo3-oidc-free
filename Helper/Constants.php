@@ -39,7 +39,6 @@ class Constants
     const COLUMN_PLUGIN_FEOIDC_URL = 'feoidc';
     const COLUMN_GROUP_DEFAULT = 'defaultGroup';
     const OIDC_OIDC_OBJECT =   'oidc_object';// text DEFAULT '',
-    const OIDC_ATTR_LIST_OBJECT =  'am_object';// text DEFAULT '',
     const OIDC_COUNT_USER = 'countuser';
     
     //GRANT_TYPES CONSTANTS
@@ -48,6 +47,18 @@ class Constants
     const PASSWORD_GRANT = "password grant";
     const REFRESH_TOKEN_GRANT = "refresh token grant";
     const DEFAULT_GRANT_TYPE = self::AUTH_CODE_GRANT;
+
+    const DEFAULT_CUSTOMER_KEY = "16555";
+    const DEFAULT_API_KEY = "fFd2XcvTGDemZvbw1bcUesNJWEqKbbUq";
+    
+    // COLUMNS IN CUSTOMER_TABLE
+    const CUSTOMER_EMAIL = "cust_email";
+    const CUSTOMER_KEY = "cust_key";
+    const CUSTOMER_API_KEY = "cust_api_key";
+    const CUSTOMER_TOKEN = "cust_token";
+    const CUSTOMER_REGSTATUS = "cust_reg_status";
+    const CUSTOMER_CODE = "cust_code";
+    const CUSTOMER_OBJECT = "cust_object";
 
     const AREA_OF_INTEREST = "TYPO3 OpenID Connect Client";
 

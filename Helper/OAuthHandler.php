@@ -40,13 +40,12 @@ class OAuthHandler {
             exit( curl_error($ch) );
         }
 
-        if(!is_array(json_decode($response, true))){
+        if(!is_array(json_decode((string)$response, true))){
             echo "<b>Response : </b><br>";print_r($response);echo "<br><br>";
             exit("Invalid response received. 1");
         }
 
-        $response = json_decode($response,true);
-
+        $response = json_decode((string)$response,true);
         if (isset($response["error"])) {
             if (is_array($response["error"])) {
                 $response["error"] = $response["error"]["message"];
@@ -75,8 +74,8 @@ class OAuthHandler {
         $id_array = explode(".", $id_token);
         if(isset($id_array[1])) {
             $id_body = base64_decode($id_array[1]);
-            if(is_array(json_decode($id_body, true))){
-                return json_decode($id_body,true);
+            if(isset($id_body) && !empty($id_body) && is_array(json_decode((string)$id_body, true))){
+                return json_decode((string)$id_body,true);
             }
         }
         echo 'Invalid response received.<br><b>Id_token : </b>'.$id_token;
@@ -90,12 +89,12 @@ class OAuthHandler {
             'Authorization: Bearer ' .$access_token));
 
         $response = curl_exec($ch);
-        $content = json_decode($response,true);
+        $content = json_decode((string)$response,true);
         error_log("userinfo response array: ".print_r($content,true));
         if(isset($content["error_description"])){
             exit($content["error_description"]);
         } else if(isset($content["error"])){
-            exit($content["error"]);
+            exit(print_r($content["error"],true));
         }
         return $content;
     }
@@ -112,7 +111,7 @@ class OAuthHandler {
             'sslverify' => false,
         ));
 
-        $content = json_decode($response,true);
+        $content = isset($response) && !empty($response) ? json_decode((string)$response,true) : array();
         if(isset($content["error_description"])){
             exit($content["error_description"]);
         } else if(isset($content["error"])){
