@@ -12,7 +12,7 @@ v1.0.4
  - Security improvements
  - UI updates
 
-v1.0.6
+v1.0.8
  - Typo3 v10, v11 and v12 compatibility
  - Security improvements
  - Updated UI
