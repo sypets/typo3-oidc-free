@@ -7,12 +7,12 @@ Installation Instructions:
 
 1. Composer Installation:
     Run the below command to install the extension:
-    - composer require miniorange/miniorange-oidc
+        - composer require miniorange/miniorange-oidc
 
             OR
 
 2. Manual Installation:
-    - Unzip the plugin zip into the typo3conf/ext folder, rename the plugin folder to 'oauth' and activate the extension from the Extensions section in Typo3.
+        - Unzip the plugin zip into the typo3conf/ext folder, rename the plugin folder to 'oauth' and activate the extension from the Extensions section in Typo3.
 
 3. After installing the extension, apply the database changes, if not applied automatically.
 
@@ -43,4 +43,4 @@ Installation Instructions:
 10. Once you have done all the above steps, you are ready to test the SSO. You can use your Feoidc Page URL in order to initiate the SSO.
 
 You can choose the setup guide according to your OAuth/OIDC provider from belo link:
-https://plugins.miniorange.com/typo3-sso-single-sign-on-with-oauth-openid-connect-setup-guides
+    - https://plugins.miniorange.com/typo3-sso-single-sign-on-with-oauth-openid-connect-setup-guides

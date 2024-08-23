@@ -37,19 +37,23 @@ Extension Configurations
 .. figure:: Images/configurations.png
    :alt: OpenID Connect Client Configurations
 
+
 * Provide the redirect/callback URL in your OAuth/OIDC Provider application by copying it from Frontend Redirect/Callback Url field in OpenID Connect Client tab.
 
 * Once you are done with the configurations on both ends (i.e., Typo3 and your OAuth/OIDC Provider), click on the Test Configuration button in the OpenID Connect Client tab of the plugin and check if you are able to test it successfully.
 .. figure:: Images/TestConfiguration.png
    :alt: Test Configuration Window
 
+
 * Navigate to the Attribute Mapping tab and map the Username attribute to your OAuth/OIDC Provider attribute using which you want to identify the users in Typo3 (you can find all the attributes received from your OAuth/OIDC Provider in the test configuration).
 .. figure:: Images/AttributeMapping.png
    :alt: Attribute Mapping Settings
 
+
 * Navigate to the Group Mapping tab of the plugin and save the Group Mapping for Frontend Users by selecting the Default Usergroup.
 .. figure:: Images/RoleMapping.png
    :alt: Default Group Mapping Settings
+   
 
 * Once you have done all the above steps, you are ready to test the SSO. You can use your Feoidc Page URL in order to initiate the SSO.
 
