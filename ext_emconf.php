@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'miniOrange',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.0.0-12.4.99',
+            'typo3' => '8.7.30-12.4.99',
         ],
     ],
     'version' => '1.0.9',
