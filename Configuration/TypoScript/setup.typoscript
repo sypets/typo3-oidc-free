@@ -83,17 +83,17 @@ plugin.tx_oauth._CSS_DEFAULT_STYLE (
 )
 
 # Module; configuration;
-module.tx_oauth_tools_besamlkey{
+module.tx_oauth_tools_beoidckey{
     persistence {
-        storagePid = {$module.tx_oauth_besamlkey.persistence.storagePid}
+        storagePid = {$module.tx_oauth_beoidckey.persistence.storagePid}
     }
     view {
         templateRootPaths.0 = EXT::oauth/Resources/Private/Backend/Templates/
-        templateRootPaths.1 = {$module.tx_oauth_besamlkey.view.templateRootPath};
+        templateRootPaths.1 = {$module.tx_oauth_beoidckey.view.templateRootPath};
         partialRootPaths.0 = EXT::oauth/Resources/Private/Backend/Partials/
-        partialRootPaths.1 = {$module.tx_oauth_besamlkey.view.partialRootPath};
+        partialRootPaths.1 = {$module.tx_oauth_beoidckey.view.partialRootPath};
         layoutRootPaths.0 = EXT::oauth/Resources/Private/Backend/Layouts/
-        layoutRootPaths.1 = {$module.tx_oauth_besamlkey.view.layoutRootPath}
+        layoutRootPaths.1 = {$module.tx_oauth_beoidckey.view.layoutRootPath}
     }
     headerData {
     10 = TEXT
@@ -117,7 +117,7 @@ module.tx_oauth_tools_besamlkey{
 #                }
 #            }
 #
-#            Miniorange\Oauth\Domain\Model\Besaml {
+#            Miniorange\Oauth\Domain\Model\Beoidc {
 #                mapping {
 #                    tableName = fe_groups
 #                }

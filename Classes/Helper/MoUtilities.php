@@ -88,7 +88,7 @@ class MoUtilities
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Constants::TABLE_CUSTOMER);
         $variable = $queryBuilder->select($col)->from(Constants::TABLE_CUSTOMER)->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetch();
-        return $variable && $variable[$col] ? $variable[$col] : null;
+        return is_array($variable) ? $variable[$col] : $variable;
     }
 
     /**
@@ -149,7 +149,7 @@ class MoUtilities
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $columnValue = $queryBuilder->select($col)->from($table)->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetch();
-        return $columnValue && $columnValue[$col] ? $columnValue[$col] : null;
+        return is_array($columnValue) ? $columnValue[$col] : $columnValue;
     }
 
     public static function showErrorFlashMessage($message, $header = "ERROR")
@@ -174,5 +174,22 @@ class MoUtilities
         for ($i = 0; $i < $length; $i++)
             $uniqueID .= substr($chars, rand(0, 15), 1);
         return 'a' . $uniqueID;
+    }
+
+    public static function fetchFromOidc($col)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Constants::TABLE_OIDC);
+        $variable = $queryBuilder->select($col)->from(Constants::TABLE_OIDC)->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetch();
+        return is_array($variable) ? $variable[$col] : $variable;
+    }
+
+    public static function updateOidc($column, $value)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Constants::TABLE_OIDC);
+        if (self::fetchFromOidc('uid') == null) 
+        {
+            $queryBuilder->insert(Constants::TABLE_OIDC)->values(['uid' => '1'])->execute();
+        }
+        $queryBuilder->update(Constants::TABLE_OIDC)->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->set($column, $value)->execute();
     }
 }

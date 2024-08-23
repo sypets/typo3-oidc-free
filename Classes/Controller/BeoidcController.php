@@ -36,7 +36,7 @@ class BeoidcController extends ActionController
         $customer = new CustomerMo();
         $version = new Typo3Version();
         $typo3Version = $version->getVersion();
-        $send_email = $this->fetchFromOidc(constants::EMAIL_SENT);
+        $send_email = MoUtilities::fetchFromOidc(constants::EMAIL_SENT);
 
         if ($send_email == NULL) {
             $site = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
@@ -99,10 +99,10 @@ class BeoidcController extends ActionController
             $username = $_POST['oidc_am_username'];
 
             if (!MoUtilities::isEmptyOrNull($username)) {
-                if ($this->fetchFromOidc('uid') == null) {
+                if (MoUtilities::fetchFromOidc('uid') == null) {
                     MoUtilities::showErrorFlashMessage('Please configure OAuth / OpenID Connect client first.');
                 } else {
-                    $this->updateOidc(Constants::OIDC_ATTRIBUTE_USERNAME, $username);
+                    MoUtilities::updateOidc(Constants::OIDC_ATTRIBUTE_USERNAME, $username);
                     MoUtilities::showSuccessFlashMessage('Attribute Mapping saved successfully.');
                 }
             } else {
@@ -111,7 +111,7 @@ class BeoidcController extends ActionController
         } //------------GROUP MAPPING SETTINGS---------------
         elseif (isset($_POST['option']) and $_POST['option'] == "group_mapping") {
 
-            $this->updateOidc(Constants::COLUMN_GROUP_DEFAULT, $_POST['defaultUserGroup']);
+            MoUtilities::updateOidc(Constants::COLUMN_GROUP_DEFAULT, $_POST['defaultUserGroup']);
             MoUtilities::showSuccessFlashMessage('Group Mapping saved successfully!');
         } //------------ VERIFY CUSTOMER---------------
         elseif (isset($_POST['option']) and $_POST['option'] == "mo_oidc_verify_customer") {
@@ -148,7 +148,7 @@ class BeoidcController extends ActionController
         $oidc_object = is_array($oidc_object) ? $oidc_object : json_decode($oidc_object, true);
         $this->view->assign('conf', $oidc_object);
         $this->view->assign('defaultGroup', Utilities::fetchFromTable(Constants::COLUMN_GROUP_DEFAULT, Constants::TABLE_OIDC));
-        $this->view->assign('am_username', $this->fetchFromOidc(Constants::OIDC_ATTRIBUTE_USERNAME));
+        $this->view->assign('am_username', MoUtilities::fetchFromOidc(Constants::OIDC_ATTRIBUTE_USERNAME));
         $this->view->assign('tab', $this->tab);
 
         if (isset($oidc_object) && !empty($oidc_object)) {
@@ -199,13 +199,6 @@ class BeoidcController extends ActionController
                 ->withAddedHeader('Content-Type', 'text/html; charset=utf-8')
                 ->withBody($this->streamFactory->createStream($this->view->render()));
         }
-    }
-
-    public function fetchFromOidc($col)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Constants::TABLE_OIDC);
-        $variable = $queryBuilder->select($col)->from(Constants::TABLE_OIDC)->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetch();
-        return $variable && $variable[$col] ? $variable[$col] : null;
     }
 
     //  LOGOUT CUSTOMER
@@ -296,14 +289,6 @@ class BeoidcController extends ActionController
         return false;
     }
 
-// FETCH CUSTOMER
-
-    public function updateOidc($column, $value)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Constants::TABLE_OIDC);
-        $queryBuilder->update(Constants::TABLE_OIDC)->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->set($column, $value)->execute();
-    }
-
 // ---- UPDATE CUSTOMER Details
 
     public function account($post)
@@ -371,7 +356,7 @@ class BeoidcController extends ActionController
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Constants::TABLE_CUSTOMER);
         $variable = $queryBuilder->select($col)->from(Constants::TABLE_CUSTOMER)->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetch();
-        return $variable && $variable[$col] ? $variable[$col] : null;
+        return is_array($variable) ? $variable[$col] : $variable;
     }
 
 // --------------------SUPPORT QUERY---------------------

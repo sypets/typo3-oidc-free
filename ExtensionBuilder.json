@@ -155,7 +155,7 @@
       "version": "1.0.0"
     },
     "extensionKey": "oauth",
-    "name": "miniOrange OAuth/OIDC",
+    "name": "OAuth/OIDC SSO",
     "originalExtensionKey": "oauth",
     "originalVendorName": "Miniorange",
     "persons": [
