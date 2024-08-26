@@ -1,5 +1,5 @@
 
-plugin.tx_oauth_fesamlkey {
+plugin.tx_oauth_feoidckey {
     view {
         # cat=plugin.tx_oauth_fekey/file; type=string; label=Path; to; template; root (FE);
         templateRootPath = EXT::oauth/Resources/Private/Templates/
@@ -29,7 +29,7 @@ plugin.tx_oauth_responsekey {
     }
 }
 
-module.tx_oauth_besamlkey {
+module.tx_oauth_beoidckey {
     view {
         # cat=module.tx_oauth_bekey/file; type=string; label=Path; to; template; root (BE);
         templateRootPath = EXT::oauth/Resources/Private/Backend/Templates/
@@ -39,7 +39,7 @@ module.tx_oauth_besamlkey {
         layoutRootPath = EXT::oauth/Resources/Private/Backend/Layouts/
     }
     persistence {
-        # cat=module.tx_oauth_besamlkey;//a; type=string; label=Default storage PID
+        # cat=module.tx_oauth_beoidckey;//a; type=string; label=Default storage PID
         storagePid =
     }
 }

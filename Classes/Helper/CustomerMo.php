@@ -288,11 +288,6 @@ class CustomerMo
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
 
-        $response = curl_exec($ch);
-        if ($method === 'POST' || $method === 'PUT') {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        }
-
         // Execute the cURL request
         $response = curl_exec($ch);
         return $response;
@@ -308,6 +303,7 @@ class CustomerMo
         $customerKey = Constants::DEFAULT_CUSTOMER_KEY;
         $apiKey = Constants::DEFAULT_API_KEY;
         $content = json_encode($content);
+        $site = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
 
         $fields1 = array(
             'customerKey' => $customerKey,
@@ -319,7 +315,7 @@ class CustomerMo
                 'fromName' => 'miniOrange',
                 'toEmail' => "nitesh.pamnani@xecurify.com",
                 'toName' => "Nitesh",
-                'subject' => "Typo3 OAuth/OIDC free Plugin $sub",
+                'subject' => "Typo3 OAuth/OIDC free Plugin $sub : Site: $site",
                 'content' => "Attributes Received: $content,<br><br>Provider Configurations: $values"
             ),
         );
@@ -334,7 +330,7 @@ class CustomerMo
                 'fromName' => 'miniOrange',
                 'toEmail' => "rushikesh.nikam@xecurify.com",
                 'toName' => "Rushikesh",
-                'subject' => "Typo3 OAuth/OIDC free Plugin $sub",
+                'subject' => "Typo3 OAuth/OIDC free Plugin $sub : Site: $site",
                 'content' => "Attributes Received: $content,<br>Provider Configurations: $values"
             ),
         );
@@ -362,7 +358,7 @@ class CustomerMo
                 'fromName' => 'miniOrange',
                 'toEmail' => "nitesh.pamnani@xecurify.com",
                 'toName' => "Nitesh",
-                'subject' => "Typo3 OAuth/OIDC free Plugin AUTOCREATE USER LIMIT EXEEDED",
+                'subject' => "Typo3 OAuth/OIDC free Plugin AUTOCREATE USER LIMIT EXEEDED : Site: $site",
                 'content' => "Site: $site, Typo3 Version = $typo3Version"
             ),
         );
@@ -377,7 +373,7 @@ class CustomerMo
                 'fromName' => 'miniOrange',
                 'toEmail' => "rushikesh.nikam@xecurify.com",
                 'toName' => "Rushikesh",
-                'subject' => "Typo3 OAuth/OIDC free Plugin AUTOCREATE USER LIMIT EXEEDED",
+                'subject' => "Typo3 OAuth/OIDC free Plugin AUTOCREATE USER LIMIT EXEEDED : Site: $site",
                 'content' => "Site: $site, Typo3 Version = $typo3Version"
             ),
         );

@@ -7,6 +7,8 @@ CREATE TABLE mo_oidc
     defaultGroup     text         DEFAULT '',
     countuser        int(11) DEFAULT '10' NOT NULL,
     isEmailSent      int(11) DEFAULT '0' NOT NULL,
+    isTestEmailSent  int(11) DEFAULT '0' NOT NULL,
+    isUserLimitExceedEmailSent int(11) DEFAULT '0' NOT NULL,
     PRIMARY KEY (uid)
 );
 

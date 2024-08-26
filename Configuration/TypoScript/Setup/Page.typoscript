@@ -3,7 +3,7 @@ page = PAGE
 page {
    10 = FLUIDTEMPLATE
    10 {
-      file = EXT:oauth/Resources/Private/Templates/Besaml/Request.html
+      file = EXT:oauth/Resources/Private/Templates/Beoidc/Request.html
       layoutRootPaths.10 = EXT:oauth/Resources/Private/Layouts/
       partialRootPaths.10 = EXT:oauth/Resources/Private/Partials/
       templateRootPaths.10 = EXT:oauth/Resources/Private/Templates/

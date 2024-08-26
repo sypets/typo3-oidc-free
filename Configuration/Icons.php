@@ -18,10 +18,10 @@ use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 return [
     'oauth-plugin-feoidc' => [
         'provider' => SvgIconProvider::class,
-        'source' => 'EXT:oauth/Resources/Public/Icons/miniorange.png'
+        'source' => 'EXT:oauth/Resources/Public/Icons/Extension.png'
     ],
     'oauth-plugin-response' => [
         'provider' => SvgIconProvider::class,
-        'source' => 'EXT:oauth/Resources/Public/Icons/miniorange.png'
+        'source' => 'EXT:oauth/Resources/Public/Icons/Extension.png'
     ]
 ];

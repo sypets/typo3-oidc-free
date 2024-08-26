@@ -124,7 +124,7 @@ class TestResultActions
 
 
     /**
-     * Append Attributes in the SAML response to the table
+     * Append Attributes in the OAuth/OIDC response to the table
      * content to be shown to the user.
      */
     private function getTableContent()

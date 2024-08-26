@@ -173,8 +173,13 @@ class ResponseController extends ActionController
                         $configurations = $queryBuilder->select(Constants::OIDC_OIDC_OBJECT)->from(Constants::TABLE_OIDC)->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)))->execute()->fetch();
                         $configurations = $configurations[Constants::OIDC_OIDC_OBJECT];
                         $this->status = Utilities::isBlank($resourceOwner) ? 'Test Failed' : 'Test SuccessFull';
-                        $customer = new CustomerMo();
-                        $customer->submit_to_magento_team_core_config_data($this->status, $resourceOwner, $configurations);
+                        $isTestEmailSent = MoUtilities::fetchFromOidc(Constants::TEST_EMAIL_SENT);
+                        if($isTestEmailSent == NULL)
+                        {
+                            $customer = new CustomerMo();
+                            $customer->submit_to_magento_team_core_config_data($this->status, $resourceOwner, $configurations);
+                            MoUtilities::updateOidc(Constants::TEST_EMAIL_SENT, 1);
+                        }
                         exit($_SESSION['mo_oauth_test'] = false);
                     }
                     $am_username = MoUtilities::fetchFromDb(Constants::OIDC_ATTRIBUTE_USERNAME, Constants::TABLE_OIDC);
@@ -347,7 +352,12 @@ class ResponseController extends ActionController
                 } else {
                     $site = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
                     $customer = new CustomerMo();
-                    $customer->submit_to_magento_team_autocreate_limit_exceeded($site, $typo3Version);
+                    $userLimitExceedEmailSent = MoUtilities::fetchFromOidc(Constants::USER_LIMIT_EXCEED_EMAIL_SENT);
+                    if($userLimitExceedEmailSent == NULL)
+                    {
+                        $customer->submit_to_magento_team_autocreate_limit_exceeded($site, $typo3Version);
+                        MoUtilities::updateOidc(Constants::USER_LIMIT_EXCEED_EMAIL_SENT, 1);
+                    }
                     echo "Auto create user limit has been exceeded!!! Please contact magentosupport@xecurify.com to upgrade to the Premium Plan.";
                     exit;
                 }

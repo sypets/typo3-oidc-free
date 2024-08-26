@@ -41,6 +41,8 @@ class Constants
     const COLUMN_GROUP_DEFAULT = 'defaultGroup';
     const COUNTUSER = 'countuser';
     const EMAIL_SENT = 'isEmailSent';
+    const TEST_EMAIL_SENT = 'isTestEmailSent';
+    const USER_LIMIT_EXCEED_EMAIL_SENT = 'isUserLimitExceedEmailSent';
 
     //ATTRIBUTE TABLE COLUMNS
     const ATTRIBUTE_USERNAME = 'am_username';

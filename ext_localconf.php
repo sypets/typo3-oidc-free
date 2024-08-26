@@ -97,22 +97,22 @@ call_user_func(
         $iconRegistry->registerIcon(
             'oauth-plugin-feoidc',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:oauth/Resources/Public/Icons/miniorange.png']
+            ['source' => 'EXT:oauth/Resources/Public/Icons/Extension.png']
         );
         $iconRegistry->registerIcon(
             'oauth-plugin-response',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:oauth/Resources/Public/Icons/miniorange.png']
+            ['source' => 'EXT:oauth/Resources/Public/Icons/Extension.png']
         );
         $iconRegistry->registerIcon(
             'oauth-plugin-logout',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:oauth/Resources/Public/Icons/miniorange.png']
+            ['source' => 'EXT:oauth/Resources/Public/Icons/Extension.png']
         );
         $iconRegistry->registerIcon(
             'oauth-plugin-bekey',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:oauth/Resources/Public/Icons/miniorange.png']
+            ['source' => 'EXT:oauth/Resources/Public/Icons/Extension.png']
         );
 
     }
